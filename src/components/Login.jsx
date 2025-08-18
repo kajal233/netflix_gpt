@@ -2,20 +2,22 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { useState, useRef } from "react";
 import { checkValidateData } from "../utils/validate";
+import {USER_AVATAR} from "../utils/constants";
+import {BACKGROUND_IMAGE} from "../utils/constants";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
-import {addUser} from "../utils/userSlice";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const email = useRef(null);
   const password = useRef(null);
@@ -45,9 +47,8 @@ const Login = () => {
 
         await updateProfile(user, {
           displayName: name.current.value,
-          photoURL:
-            "https://media.licdn.com/dms/image/v2/D5603AQHB5iiBLsD_Hg/profile-displayphoto-shrink_200_200/B56ZU2ZULaHEAc-/0/1740374361319?e=2147483647&v=beta&t=f7pfoCBvXe3VvzyqEjH6CDFdlufLEUj7OZhFwlm5hAA"
-        });
+          photoURL:{USER_AVATAR}
+           });
 
         const { uid, email: userEmail, displayName, photoURL } = auth.currentUser;
         dispatch(
@@ -58,8 +59,6 @@ const Login = () => {
             photoURL: photoURL
           })
         );
-
-        navigate("/browse");
       } catch (error) {
         setErrorMessage(error.code + " - " + error.message);
       }
@@ -73,7 +72,7 @@ const Login = () => {
         );
 
         console.log("Signed In User:", userCredential.user);
-        navigate("/browse");
+
       } catch (error) {
         setErrorMessage(error.code + " - " + error.message);
       }
@@ -90,7 +89,7 @@ const Login = () => {
       <Header />
       <div className="absolute">
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/258d0f77-2241-4282-b613-8354a7675d1a/web/IN-en-20250721-TRIFECTA-perspective_cadc8408-df6e-4313-a05d-daa9dcac139f_large.jpg"
+          src={BACKGROUND_IMAGE}
           alt="logo"
         />
       </div>
